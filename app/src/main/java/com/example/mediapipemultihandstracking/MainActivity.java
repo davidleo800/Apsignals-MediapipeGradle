@@ -234,9 +234,6 @@ public class MainActivity extends BasicActivity {
             } else if (isClose(landmarkList.get(4), landmarkList.get(9)) && isClose(landmarkList.get(8), landmarkList.get(11)) &&
                     isClose(landmarkList.get(11), landmarkList.get(16)) && isClose(landmarkList.get(20), landmarkList.get(15))) {
                 return "B";
-            } else if (!thumbIsOpen && firstFingerIsOpen && secondFingerIsOpen && !thirdFingerIsOpen && !fourthFingerIsOpen
-                    && isClose(landmarkList.get(8), landmarkList.get(11))) {
-                return "Indice y medio cerca";
             } else if (thumbIsOpen && firstFingerIsOpen && secondFingerIsOpen && thirdFingerIsOpen && fourthFingerIsOpen &&
                     Movimiento.equals("MovDown")&& Direccion.equals("left") ) {
                 return "Hola";
@@ -246,9 +243,9 @@ public class MainActivity extends BasicActivity {
                 return "Bien";
             }else if (isMajor(landmarkList.get(4), landmarkList.get(12)) && !firstFingerIsOpen && !secondFingerIsOpen && !thirdFingerIsOpen && !fourthFingerIsOpen) {
             return "Mal";
-            } else if (GiroY.equals("Turnleft") ) {
+            } /*else if (GiroY.equals("Turnleft") ) {
                 return "Turnleft";
-            } else {
+            }*/ else {
                 String info = "thumbIsOpen " + thumbIsOpen + "firstFingerIsOpen" + firstFingerIsOpen
                         + "secondFingerIsOpen" + secondFingerIsOpen +
                         "thirdFingerIsOpen" + thirdFingerIsOpen + "fourthFingerIsOpen" + fourthFingerIsOpen;
