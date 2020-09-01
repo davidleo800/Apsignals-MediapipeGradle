@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name" translatable="false">AppSignals</string>
+    <string name="no_camera_access" translatable="false">Permisos de camara</string>
+</resources>
