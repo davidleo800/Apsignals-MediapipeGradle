@@ -47,6 +47,7 @@ public class MainActivity extends BasicActivity {
     String Movimiento = "";
     String Direccion = "";
     String GiroY = "";
+    String Zoom = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,7 +88,7 @@ public class MainActivity extends BasicActivity {
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                     moveGesture.setText(handGestureMoveCalculator2(normalizedRectsList));
+                                     moveGesture.setText(handGestureMoveCalculator(normalizedRectsList));
                                 }
                             });
                         } catch (Exception e) {
@@ -108,7 +109,7 @@ public class MainActivity extends BasicActivity {
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    moveGesture.setText(handGestureMoveCalculator(normalizedRectsList));
+                                    moveGesture.setText(handGestureMoveCalculator2(normalizedRectsList));
                                 }
                             });
                         } catch (Exception e) {
@@ -219,38 +220,49 @@ public class MainActivity extends BasicActivity {
 
 
             // Hand gesture recognition
-            if (thumbIsOpen && firstFingerIsOpen && secondFingerIsOpen && thirdFingerIsOpen && fourthFingerIsOpen) {
-                return "Cinco";
-            } else if (!thumbIsOpen && firstFingerIsOpen && secondFingerIsOpen && thirdFingerIsOpen && fourthFingerIsOpen) {
+            if (!thumbIsOpen && firstFingerIsOpen && secondFingerIsOpen && thirdFingerIsOpen && fourthFingerIsOpen
+                    ) {
+                // if(Movimiento.equals("MovDown") && landmarkList.get(0).getZ() > landmarkList.get(4).getZ() )
                 return "Cuatro";
+            } else if (landmarkList.get(0).getZ() > landmarkList.get(12).getZ() &&
+                    thumbIsOpen && firstFingerIsOpen && secondFingerIsOpen && thirdFingerIsOpen && fourthFingerIsOpen
+                    && landmarkList.get(0).getZ() > landmarkList.get(4).getZ() && Zoom.equals("Zoomin")) {
+                return "Hola";
             } else if (!thumbIsOpen && firstFingerIsOpen && secondFingerIsOpen && thirdFingerIsOpen && !fourthFingerIsOpen) {
                 return "Tres";
             } else if (!thumbIsOpen && firstFingerIsOpen && secondFingerIsOpen && !thirdFingerIsOpen && !fourthFingerIsOpen) {
                 return "Dos";
             } else if (!thumbIsOpen && firstFingerIsOpen && !secondFingerIsOpen && !thirdFingerIsOpen && !fourthFingerIsOpen) {
                 return "Uno";
-            } else if (isClose(landmarkList.get(4), landmarkList.get(11)) && !firstFingerIsOpen && !secondFingerIsOpen && !thirdFingerIsOpen && !fourthFingerIsOpen) {
+            } else if (isMajor(landmarkList.get(0), landmarkList.get(9)) &&
+                    isClose(landmarkList.get(4), landmarkList.get(11)) && !firstFingerIsOpen && !secondFingerIsOpen && !thirdFingerIsOpen && !fourthFingerIsOpen) {
                 return "A";
             } else if (isClose(landmarkList.get(4), landmarkList.get(9)) && isClose(landmarkList.get(8), landmarkList.get(11)) &&
-                    isClose(landmarkList.get(11), landmarkList.get(16)) && isClose(landmarkList.get(20), landmarkList.get(15))) {
+                    isClose(landmarkList.get(11), landmarkList.get(16)) && isClose(landmarkList.get(20), landmarkList.get(15)) &&
+                    landmarkList.get(4).getZ() > landmarkList.get(0).getZ() && isMajor(landmarkList.get(0), landmarkList.get(9))    ) {
                 return "B";
-            } else if (thumbIsOpen && firstFingerIsOpen && secondFingerIsOpen && thirdFingerIsOpen && fourthFingerIsOpen &&
+            } /*else if (thumbIsOpen && firstFingerIsOpen && secondFingerIsOpen && thirdFingerIsOpen && fourthFingerIsOpen &&
                     Movimiento.equals("MovDown")&& Direccion.equals("left") ) {
                 return "Hola";
-            } else if (!firstFingerIsOpen && secondFingerIsOpen && thirdFingerIsOpen && fourthFingerIsOpen && isClose(landmarkList.get(4), landmarkList.get(8))) {
+            } */else if (!firstFingerIsOpen && secondFingerIsOpen && thirdFingerIsOpen && fourthFingerIsOpen && isClose(landmarkList.get(4), landmarkList.get(8))) {
                 return "OK";
-            }else if (!isMajor(landmarkList.get(4), landmarkList.get(12)) && !firstFingerIsOpen && !secondFingerIsOpen && !thirdFingerIsOpen && !fourthFingerIsOpen) {
+            }else if (!isMajor(landmarkList.get(4), landmarkList.get(12)) && isMajor(landmarkList.get(0), landmarkList.get(9))
+                    && !firstFingerIsOpen && !secondFingerIsOpen &&
+                    !thirdFingerIsOpen && !fourthFingerIsOpen && (Direccion.equals("left") || Direccion.equals("right")) ) {
                 return "Bien";
+            }else if (thumbIsOpen && firstFingerIsOpen && secondFingerIsOpen && thirdFingerIsOpen && fourthFingerIsOpen) {
+                return "Cinco";
             }else if (isMajor(landmarkList.get(4), landmarkList.get(12)) && !firstFingerIsOpen && !secondFingerIsOpen && !thirdFingerIsOpen && !fourthFingerIsOpen) {
-            return "Mal";
-            } /*else if (GiroY.equals("Turnleft") ) {
-                return "Turnleft";
-            }*/ else {
+                return "Mal";
+            } else if ( landmarkList.get(0).getZ() > landmarkList.get(12).getZ() && isMajor(landmarkList.get(10), landmarkList.get(9))&&
+                    Movimiento.equals("MovDown")) {
+                return "¿Cómo estás?";
+            } else {
                 String info = "thumbIsOpen " + thumbIsOpen + "firstFingerIsOpen" + firstFingerIsOpen
                         + "secondFingerIsOpen" + secondFingerIsOpen +
                         "thirdFingerIsOpen" + thirdFingerIsOpen + "fourthFingerIsOpen" + fourthFingerIsOpen;
                 Log.d(TAG, "handGestureCalculator: == " + info);
-                return "___";
+                return "__";
             }
         }
         return "";
@@ -373,16 +385,16 @@ public class MainActivity extends BasicActivity {
                 // LOG(INFO) << "Angle: " << angle;
                 if (angle >= -45 && angle < 45) {
                     Movimiento="MovRight";
-                    return "MovRight";
+                    //return "MovRight";
                 } else if (angle >= 45 && angle < 135) {
                     Movimiento="MovUp";
-                    return "MovUp";
+                    //return "MovUp";
                 } else if (angle >= 135 || angle < -135) {
                     Movimiento="MovLeft";
-                    return "MovLeft";
+                    //return "MovLeft";
                 } else if (angle >= -135 && angle < -45) {
                     Movimiento="MovDown";
-                    return "MovDown";
+                    //return "MovDown";
                 }
             }
         }
@@ -485,8 +497,10 @@ public class MainActivity extends BasicActivity {
             double heightDifferenceThreshold = height * heightDifferenceFactor;
             if (height < previousRectangleHeight - heightDifferenceThreshold) {
                 // return "Zoom out";
+                Zoom = "Zoomout";
             } else if (height > previousRectangleHeight + heightDifferenceThreshold) {
                 // return "Zoom in";
+                Zoom = "Zoomin";
             }
         }
         previousRectangleHeight = height;
@@ -519,11 +533,11 @@ public class MainActivity extends BasicActivity {
                     double angleDifferenceTreshold = 12;
                     if (previousAngle >= 80 && previousAngle <= 100) {
                         if (ang_in_degree2 > previousAngle + angleDifferenceTreshold) {
-                            GiroY = "Turnleft";
+                            //GiroY = "Turnleft";
                             // return "Slide left";
 
                         } else if (ang_in_degree2 < previousAngle - angleDifferenceTreshold) {
-                            GiroY = "Turnright";
+                            //GiroY = "Turnright";
                             // return "Slide right";
 
                         }
